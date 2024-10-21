@@ -9,6 +9,62 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime? @map("email_verified")
+  image         String?
+  accounts      Account[]
+  role          Role      // Enum to differentiate between Coach and Student
+  coachData     Coach?    
+  studentData   Student?  
+
+  @@map("users")
+}
+
+model Account {
+  id                 String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId             String  @db.ObjectId @map("user_id")
+  type               String
+  provider           String
+  providerAccountId  String  @map("provider_account_id")
+  refresh_token      String? 
+  access_token       String? 
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String? 
+  session_state      String?
+ 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Coach {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String   @db.ObjectId @unique  // Add @unique to ensure a one-to-one relation
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  clients       Student[] @relation("CoachClients")  // Example: Coach can have multiple students
+}
+
+model Student {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String   @db.ObjectId @unique  // Add @unique to ensure a one-to-one relation
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  coach         Coach?   @relation("CoachClients", fields: [coachId], references: [id])
+  coachId       String?  @db.ObjectId  // Foreign key to associate student with a coach
+  iRacingID     String
+}
+
+// Enum for role differentiation
+enum Role {
+  COACH
+  STUDENT
 }
