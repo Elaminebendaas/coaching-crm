@@ -48,10 +48,11 @@ model Account {
 }
 
 model Coach {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId        String   @db.ObjectId @unique  // Add @unique to ensure a one-to-one relation
-  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  clients       Student[] @relation("CoachClients")  // Example: Coach can have multiple students
+  id            String           @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String           @db.ObjectId @unique  // Add @unique to ensure a one-to-one relation
+  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  clients       Student[]        @relation("CoachClients")  // Example: Coach can have multiple students
+  subscription  SubscriptionTier @default(FREE)// Enum to differentiate between free, basic, and pro
 }
 
 model Student {
@@ -67,4 +68,10 @@ model Student {
 enum Role {
   COACH
   STUDENT
+}
+
+enum SubscriptionTier {
+  FREE
+  BASIC
+  PRO
 }
