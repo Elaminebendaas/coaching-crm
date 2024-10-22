@@ -34,7 +34,7 @@ export const StudentRegisterSchema = z.object({
   iRacingID: z
     .string()
     .min(2, { message: "iRacing ID must be at least 2 characters long" }),
-  coachID: z
+  coachUsername: z
     .string()
     .min(3, { message: "Coach ID must be at least 3 characters long" }),
 });

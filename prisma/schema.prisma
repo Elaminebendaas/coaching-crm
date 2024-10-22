@@ -1,9 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,10 +10,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Account {
   id                 String  @id @default(auto()) @map("_id") @db.ObjectId
-  coachId            String? @db.ObjectId @map("coach_id")  // Nullable coach foreign key
+  coachId            String? @db.ObjectId @map("coach_id")  // Nullable coach foreign key (references coach ID)
   studentId          String? @db.ObjectId @map("student_id")
   type               String
   provider           String
@@ -29,38 +25,51 @@ model Account {
   id_token           String? 
   session_state      String?
  
+  // Relation to Coach using coachId (Coach's ID)
   coach   Coach?   @relation(fields: [coachId], references: [id], onDelete: Cascade) // Nullable relation to Coach
   student Student? @relation(fields: [studentId], references: [id], onDelete: Cascade) // Nullable relation to Student
  
   @@unique([provider, providerAccountId])
   @@map("accounts")
 }
+
 model Coach {
   id            String           @id @default(auto()) @map("_id") @db.ObjectId
-  username      String?          @unique
+  username      String?          @unique  // Coach's username
+  name          String?
   email         String?          @unique
   emailVerified DateTime?        @map("email_verified")
   image         String?
   password      String?
-  clients       Student[]        @relation("CoachClients")
+  clients       Student[]        @relation("CoachClients") // One-to-many relation to students
   subscription  SubscriptionTier @default(FREE)
-  accounts      Account[]
+  accounts      Account[]        // One-to-many relation with Account
+
+  @@map("coaches")
 }
 
 model Student {
   id            String           @id @default(auto()) @map("_id") @db.ObjectId
   username      String?          @unique
+  name          String?
   email         String?          @unique
   emailVerified DateTime?        @map("email_verified")
   image         String?
   password      String?
-  coach         Coach?           @relation("CoachClients", fields: [coachId], references: [id])
-  coachId       String?          @db.ObjectId
+  
+  // This field references the coach's username, not their ID
+  coachUsername String?          @map("coach_username") // Field to store the coach's username
+
+  // Relation to Coach by username (Coach's username instead of ID)
+  coach         Coach?           @relation("CoachClients", fields: [coachUsername], references: [username])
+
   iRacingID     String
   accounts      Account[]
+
+  @@map("students")
 }
 
-// Enum for role differentiation
+// Enum for subscription tiers
 
 enum SubscriptionTier {
   FREE

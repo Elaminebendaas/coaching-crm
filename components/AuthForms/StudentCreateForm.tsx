@@ -28,7 +28,7 @@ export default function StudentCreateForm() {
       name: "",
       username: "",
       iRacingID: "",
-      coachID: "",
+      coachUsername: "",
     },
   });
 
@@ -125,10 +125,10 @@ export default function StudentCreateForm() {
         />
         <FormField
           control={form.control}
-          name="coachID"
+          name="coachUsername"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Coach ID</FormLabel>
+              <FormLabel>Coach Username</FormLabel>
               <FormControl>
                 <Input {...field} disabled={isPending} />
               </FormControl>
