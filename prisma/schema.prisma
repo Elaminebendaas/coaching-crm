@@ -13,23 +13,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime? @map("email_verified")
-  image         String?
-  accounts      Account[]
-  role          Role      // Enum to differentiate between Coach and Student
-  coachData     Coach?    
-  studentData   Student?  
-
-  @@map("users")
-}
 
 model Account {
   id                 String  @id @default(auto()) @map("_id") @db.ObjectId
-  userId             String  @db.ObjectId @map("user_id")
+  coachId            String? @db.ObjectId @map("coach_id")  // Nullable coach foreign key
+  studentId          String? @db.ObjectId @map("student_id")
   type               String
   provider           String
   providerAccountId  String  @map("provider_account_id")
@@ -41,34 +29,38 @@ model Account {
   id_token           String? 
   session_state      String?
  
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  coach   Coach?   @relation(fields: [coachId], references: [id], onDelete: Cascade) // Nullable relation to Coach
+  student Student? @relation(fields: [studentId], references: [id], onDelete: Cascade) // Nullable relation to Student
  
   @@unique([provider, providerAccountId])
   @@map("accounts")
 }
-
 model Coach {
   id            String           @id @default(auto()) @map("_id") @db.ObjectId
-  userId        String           @db.ObjectId @unique  // Add @unique to ensure a one-to-one relation
-  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  clients       Student[]        @relation("CoachClients")  // Example: Coach can have multiple students
-  subscription  SubscriptionTier @default(FREE)// Enum to differentiate between free, basic, and pro
+  username      String?          @unique
+  email         String?          @unique
+  emailVerified DateTime?        @map("email_verified")
+  image         String?
+  password      String?
+  clients       Student[]        @relation("CoachClients")
+  subscription  SubscriptionTier @default(FREE)
+  accounts      Account[]
 }
 
 model Student {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId        String   @db.ObjectId @unique  // Add @unique to ensure a one-to-one relation
-  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  coach         Coach?   @relation("CoachClients", fields: [coachId], references: [id])
-  coachId       String?  @db.ObjectId  // Foreign key to associate student with a coach
+  id            String           @id @default(auto()) @map("_id") @db.ObjectId
+  username      String?          @unique
+  email         String?          @unique
+  emailVerified DateTime?        @map("email_verified")
+  image         String?
+  password      String?
+  coach         Coach?           @relation("CoachClients", fields: [coachId], references: [id])
+  coachId       String?          @db.ObjectId
   iRacingID     String
+  accounts      Account[]
 }
 
 // Enum for role differentiation
-enum Role {
-  COACH
-  STUDENT
-}
 
 enum SubscriptionTier {
   FREE
