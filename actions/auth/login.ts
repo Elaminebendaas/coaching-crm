@@ -7,8 +7,7 @@ import { AuthError } from "next-auth";
 import { getCoachByEmail } from "@/util/coach";
 import { getStudentByEmail } from "@/util/student";
 import { generateVerificationToken } from "@/lib/token";
-import { error } from "console";
-import { get } from "http";
+
 import { sendVerificationEmail } from "@/lib/mail";
 
 export const login = async (data: z.infer<typeof LoginSchema>) => {
@@ -26,18 +25,20 @@ export const login = async (data: z.infer<typeof LoginSchema>) => {
   if (!existingCoach && !existingStudent) {
     return { error: "Invalid credentials" };
   }
-
-  if (existingCoach) {
+    
+  if(existingCoach){
+  if (!existingCoach?.emailVerified) {
     const verificationToken = await generateVerificationToken(
       existingCoach.email
     );
+
     await sendVerificationEmail(
       verificationToken.email,
       verificationToken.token
     );
-  }
-
-  if (existingStudent) {
+  }}
+  if(existingStudent){
+  if (!existingStudent?.emailVerified) {
     const verificationToken = await generateVerificationToken(
       existingStudent.email
     );
@@ -45,7 +46,7 @@ export const login = async (data: z.infer<typeof LoginSchema>) => {
       verificationToken.email,
       verificationToken.token
     );
-  }
+  }}
 
   try {
     await signIn("credentials", {
