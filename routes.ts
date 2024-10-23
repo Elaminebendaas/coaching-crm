@@ -7,7 +7,7 @@ export const publicRoutes = ["/", "", ""];
     Routes that are used for authentication.
     They will redirect users to their respective dashboards
  */
-export const authRoutes = ["/auth/login", "/signup"];
+export const authRoutes = ["/auth/login", "/auth/signup"];
 
 /* 
     Routes that start with this prefix are used for API authentication.

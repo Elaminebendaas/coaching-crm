@@ -2,10 +2,11 @@
 import * as z from "zod";
 import { CoachRegisterSchema, StudentRegisterSchema } from "@/schemas";
 import { db } from "@/lib/db";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { getCoachByEmail, getCoachByUsername } from "@/util/coach";
-import { get } from "http";
 import { getStudentByEmail, getStudentByUsername } from "@/util/student";
+import { generateVerificationToken } from "@/lib/token";
+import { sendVerificationEmail } from "@/lib/mail";
 
 export const CoachRegister = async (
   data: z.infer<typeof CoachRegisterSchema>
@@ -39,7 +40,11 @@ export const CoachRegister = async (
     },
   });
 
-  return { success: "Logged in!" };
+  const verificationToken = await generateVerificationToken(email);
+
+  await sendVerificationEmail(verificationToken.email, verificationToken.token);
+
+  return { success: "Confirmation email sent!" };
 };
 
 export const StudentRegister = async (
@@ -87,5 +92,8 @@ export const StudentRegister = async (
     },
   });
 
-  return { success: "Logged in!" };
+  const verificationToken = await generateVerificationToken(email);
+  await sendVerificationEmail(verificationToken.email, verificationToken.token);
+
+  return { success: "Confirmation email sent!" };
 };

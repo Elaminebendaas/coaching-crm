@@ -24,8 +24,7 @@ model Account {
   scope              String?
   id_token           String? 
   session_state      String?
- 
-  // Relation to Coach using coachId (Coach's ID)
+
   coach   Coach?   @relation(fields: [coachId], references: [id], onDelete: Cascade) // Nullable relation to Coach
   student Student? @relation(fields: [studentId], references: [id], onDelete: Cascade) // Nullable relation to Student
  
@@ -44,7 +43,7 @@ model Coach {
   clients       Student[]        @relation("CoachClients") // One-to-many relation to students
   subscription  SubscriptionTier @default(FREE)
   accounts      Account[]        // One-to-many relation with Account
-
+  role          UserRole           @default(COACH)
   @@map("coaches")
 }
 
@@ -56,23 +55,32 @@ model Student {
   emailVerified DateTime?        @map("email_verified")
   image         String?
   password      String?
-  
-  // This field references the coach's username, not their ID
   coachUsername String?          @map("coach_username") // Field to store the coach's username
-
-  // Relation to Coach by username (Coach's username instead of ID)
   coach         Coach?           @relation("CoachClients", fields: [coachUsername], references: [username])
-
   iRacingID     String
   accounts      Account[]
+  role          UserRole         @default(STUDENT)
 
   @@map("students")
 }
 
-// Enum for subscription tiers
+
+model VerificationToken {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String
+  token     String  @unique
+  expires   DateTime @map("expires_at")
+
+  @@unique([email, token])
+  @@map("verification_tokens")
+}
 
 enum SubscriptionTier {
   FREE
   BASIC
   PRO
+}
+enum UserRole {
+  COACH
+  STUDENT
 }

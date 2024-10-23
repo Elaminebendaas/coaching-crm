@@ -8,10 +8,41 @@ import {
   DEFAULT_STUDENT_LOGIN_REDIRECT,
 } from "@/routes";
 
+
 const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {
   const { nextUrl } = req;
+  const  user  = !!req.auth
+  const type = req.auth
+
+  const isApitAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
+  const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
+  const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+
+    if (isApitAuthRoute) {
+        return 
+    }
+
+    if(isAuthRoute){
+      /*         if(user){
+            if(user. === "coach"){
+                return Response.redirect(new URL(DEFAULT_COACH_LOGIN_REDIRECT, nextUrl))
+            }
+            if(user.role === "student"){
+           return Response.redirect(new URL(DEFAULT_STUDENT_LOGIN_REDIRECT, nextUrl))
+            } */
+if(user){
+   return Response.redirect(new URL(DEFAULT_COACH_LOGIN_REDIRECT, nextUrl))}
+      return
+    }
+
+    if(!user && !isPublicRoute){
+        return Response.redirect(new URL("/auth/login", nextUrl))
+    }
+
+    return
+
 });
 
 export const config = {
