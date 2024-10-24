@@ -14,24 +14,23 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { login } from "@/actions/auth/login";
+import { reset } from "@/actions/auth/reset";
 import { useTransition } from "react";
-import { LoginSchema } from "@/schemas";
+import { ResetSchema } from "@/schemas";
 import Link from "next/link";
 
-export default function LoginForm() {
+export default function ResetForm() {
   const [isPending, startTransition] = useTransition();
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
+  const form = useForm<z.infer<typeof ResetSchema>>({
+    resolver: zodResolver(ResetSchema),
     defaultValues: {
       email: "",
-      password: "",
     },
   });
 
-  const onSubmit = (data: z.infer<typeof LoginSchema>) => {
+  const onSubmit = (data: z.infer<typeof ResetSchema>) => {
     startTransition(() => {
-      login(data);
+      reset(data);
     });
   };
 
@@ -58,25 +57,12 @@ export default function LoginForm() {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input type="password" {...field} disabled={isPending} />
-              </FormControl>
-              <FormDescription>This is your private password.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+
         <FormMessage>
           {form.formState.isSubmitting ? "Submitting..." : null}
         </FormMessage>
-        <Link href="/auth/reset">Forgot password?</Link>
-        <Button type="submit">Submit</Button>
+        <Link href="/auth/login">Back to login</Link>
+        <Button type="submit">Send Reset email</Button>
       </form>
     </Form>
   );
