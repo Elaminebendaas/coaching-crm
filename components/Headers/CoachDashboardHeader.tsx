@@ -24,11 +24,13 @@ export default function CoachDashboardHeader() {
     return (
       <div
         data-testid="DashboardHeader"
-        className="h-[68px] w-full border border-[#DFE3E6] px-4 rounded-t-lg bg-[#ffffff] flex items-center justify-between"
+        className="h-[68px] w-full dark:bg-[#151718] dark:text-white border-[1px] border-[#DFE3E6] dark:border-[#313538] px-4 rounded-t-lg bg-[#ffffff] flex items-center justify-between"
       >
         <div data-testid="Header" className="flex items-center h-full">
-            <SidebarTrigger />
-          <h1 className="text-[#11181C] font-medium text-sm">{title}</h1>
+          <SidebarTrigger />
+          <h1 className="text-[#11181C] dark:text-white font-medium text-sm">
+            {title}
+          </h1>
         </div>
 
         <div className="flex items-center gap-[12px] h-[36px]">
@@ -40,11 +42,13 @@ export default function CoachDashboardHeader() {
     return (
       <div
         data-testid="DashboardHeader"
-        className="h-[68px] w-full border border-[#DFE3E6] px-4 rounded-t-lg bg-[#ffffff] flex items-center justify-between"
+        className="h-[68px] w-full dark:bg-[#151718] dark:text-white border-[1px] border-[#DFE3E6] dark:border-[#313538] px-4 rounded-t-lg bg-[#ffffff] flex items-center justify-between"
       >
         <div data-testid="Header" className="flex items-center h-full">
           <SidebarTrigger />
-          <h1 className="text-[#11181C] font-medium text-sm">{title}</h1>
+          <h1 className="text-[#11181C] dark:text-white font-medium text-sm">
+            {title}
+          </h1>
         </div>
 
         <div className="flex items-center gap-[12px] h-[36px]">
@@ -56,11 +60,11 @@ export default function CoachDashboardHeader() {
     return (
       <div
         data-testid="DashboardHeader"
-        className="h-[68px] w-full border border-[#DFE3E6] px-4 rounded-t-lg bg-[#ffffff] flex items-center justify-between"
+        className="h-[68px] w-full dark:bg-[#151718] dark:text-white border-[1px] border-[#DFE3E6] dark:border-[#313538] px-4 rounded-t-lg bg-[#ffffff] flex items-center justify-between"
       >
         <div data-testid="Header" className="flex items-center h-full">
           <SidebarTrigger />
-          <h1 className="text-[#11181C] font-medium text-sm">{title}</h1>
+          <h1 className="text-[#11181C] dark:text-white font-medium text-sm">{title}</h1>
         </div>
 
         <div className="flex items-center gap-[12px] h-[36px]">

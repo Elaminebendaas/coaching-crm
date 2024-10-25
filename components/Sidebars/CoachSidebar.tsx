@@ -5,6 +5,7 @@ import { Calendar, Home, Inbox, FileText, Settings } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -15,6 +16,7 @@ import {
   SidebarSeparator,
 } from "@/components/ui/sidebar";
 import { usePathname } from "next/navigation";
+import { ModeToggle } from "../ui/modetoggle";
 
 // Menu items.
 const items = [
@@ -53,7 +55,7 @@ export function CoachSidebar() {
       className="bg-[#F8F9FA] dark:bg-[#1A1D1E] p-[16px] border-none"
       collapsible="icon"
     >
-      <SidebarContent>
+      <SidebarContent className="bg-[#F8F9FA] dark:bg-[#1A1D1E]">
         <SidebarHeader>Coaching CRM</SidebarHeader>
         <SidebarSeparator />
         <SidebarGroup className="p-0">
@@ -76,6 +78,9 @@ export function CoachSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+        <SidebarFooter>
+          <ModeToggle />
+        </SidebarFooter>
       </SidebarContent>
     </Sidebar>
   );

@@ -17,7 +17,7 @@ export default function CoachDashboardCard({
 }) {
   return (
     <div
-      className={`flex justify-between items-center rounded-[12px] p-[12px] border w-[275px] h-[78px] shadow-sm ${className}`}
+      className={`flex justify-between items-center dark:bg-[#151718] rounded-[12px] p-[12px] border-[1px] border-[#DFE3E6] dark:border-[#313538] w-[275px] h-[78px] shadow-sm ${className}`}
     >
       <div className="flex flex-col justify-between items-start m-[0px]">
         <h3 className="text-[14px] font-normal text-[#687076]">{title}</h3>
