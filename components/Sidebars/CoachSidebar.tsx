@@ -50,12 +50,12 @@ export function CoachSidebar() {
 
   return (
     <Sidebar
-      className="bg-[#F8F9FA] dark:bg-[#1A1D1E] p-[16px] w-[240px] border-none"
+      className="bg-[#F8F9FA] dark:bg-[#1A1D1E] p-[16px] border-none"
       collapsible="icon"
     >
       <SidebarContent>
         <SidebarHeader>Coaching CRM</SidebarHeader>
-        <SidebarSeparator/>
+        <SidebarSeparator />
         <SidebarGroup className="p-0">
           <SidebarGroupContent>
             <SidebarMenu>
