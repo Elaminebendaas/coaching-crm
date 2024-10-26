@@ -18,6 +18,7 @@ import { reset } from "@/actions/auth/reset";
 import { useTransition } from "react";
 import { ResetSchema } from "@/schemas";
 import Link from "next/link";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 
 export default function ResetForm() {
   const [isPending, startTransition] = useTransition();
@@ -35,35 +36,52 @@ export default function ResetForm() {
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="example@example.com"
-                  {...field}
-                  disabled={isPending}
-                />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormMessage>
-          {form.formState.isSubmitting ? "Submitting..." : null}
-        </FormMessage>
-        <Link href="/auth/login">Back to login</Link>
-        <Button type="submit">Send Reset email</Button>
-      </form>
-    </Form>
+    <Card className="mx-auto max-w-sm">
+      <CardHeader className="border-b-[0px]">
+        <CardTitle className="text-2xl">Reset Password</CardTitle>
+        <CardDescription>
+          Enter your email to receive a password reset link
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="example@example.com"
+                      {...field}
+                      disabled={isPending}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Well send you an email with a link to reset your password.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="space-y-2">
+              <Button type="submit" className="w-full">
+                {isPending ? "Submitting..." : "Reset Password"}
+              </Button>
+              <div className="text-center">
+                <Link
+                  href="/auth/login"
+                  className="text-sm text-muted-foreground hover:underline"
+                >
+                  Back to login
+                </Link>
+              </div>
+            </div>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
   );
 }
