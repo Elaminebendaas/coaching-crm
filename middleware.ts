@@ -25,23 +25,30 @@ export default auth((req) => {
     }
 
     if(isAuthRoute){
-      /*         if(user){
-            if(user. === "coach"){
-                return Response.redirect(new URL(DEFAULT_COACH_LOGIN_REDIRECT, nextUrl))
-            }
-            if(user.role === "student"){
-           return Response.redirect(new URL(DEFAULT_STUDENT_LOGIN_REDIRECT, nextUrl))
-            } */
-if(user){
-   return Response.redirect(new URL(DEFAULT_COACH_LOGIN_REDIRECT, nextUrl))}
-      return
-    }
+      if (user) {
+        if (type?.user.role === "COACH") {
+          return Response.redirect(
+            new URL(DEFAULT_COACH_LOGIN_REDIRECT, nextUrl)
+          );
+        }
+        if (type?.user.role === "STUDENT") {
+          return Response.redirect(
+            new URL(DEFAULT_STUDENT_LOGIN_REDIRECT, nextUrl)
+          );
+        }
+        if (user) {
+          return Response.redirect(
+            new URL(DEFAULT_COACH_LOGIN_REDIRECT, nextUrl)
+          );
+        }
+      }
 
-    if(!user && !isPublicRoute){
-        return Response.redirect(new URL("/auth/login", nextUrl))
-    }
+      if (!user && !isPublicRoute) {
+        return Response.redirect(new URL("/auth/login", nextUrl));
+      }
 
-    return
+      return Response.redirect(new URL(DEFAULT_COACH_LOGIN_REDIRECT, nextUrl));
+    }
 
 });
 

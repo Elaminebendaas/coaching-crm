@@ -16,11 +16,11 @@ export const {
     error: "/auth/error",
   },
   events: {
-    async linkAccount({user}){
+    async linkAccount({ user }) {
       const isCoach = await getCoachByID(user.id);
       const isStudent = await getStudentByID(user.id);
 
-      if(isCoach){
+      if (isCoach) {
         await db.coach.update({
           where: {
             id: user.id,
@@ -31,7 +31,7 @@ export const {
         });
       }
 
-      if(isStudent){
+      if (isStudent) {
         await db.student.update({
           where: {
             id: user.id,
@@ -41,8 +41,8 @@ export const {
           },
         });
       }
-      
-  }},
+    },
+  },
   callbacks: {
     async signIn({ user, account }) {
       if (account?.provider !== "credentials") return true;
@@ -64,7 +64,6 @@ export const {
         return false; // Fail sign-in if Student's email is not verified
       }
 
-
       return true;
     },
     async session({ session, token }) {
@@ -77,7 +76,7 @@ export const {
       }
 
       if (token.subscription && session.user) {
-        session.user.subscription= token.subscription;
+        session.user.subscription = token.subscription;
       }
       return session;
     },
@@ -97,7 +96,7 @@ export const {
 
       return token;
     },
-  },  
+  },
   adapter: PrismaAdapter(db),
   session: { strategy: "jwt" },
   ...authConfig,

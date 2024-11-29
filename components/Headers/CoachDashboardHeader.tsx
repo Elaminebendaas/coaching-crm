@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "../ui/sidebar";
+import CoachHomeworkCreateModal from "../CoachHomework/CoachCreateModal";
 
 const getPageTitle = (path: string) => {
   if (path === "/coach") {
@@ -10,8 +11,10 @@ const getPageTitle = (path: string) => {
   } else if (path.includes("/coach/presets")) {
     return "Homework Presets";
   } else if (path.includes("/coach/marketing")) {
-    return "Promotions";
-  } else {
+    return "Email Promotions";
+  } else if(path.includes("/coach/booking")) {
+    return "Bookings";
+  }else {
     return "Page Not Found";
   }
 };
@@ -52,7 +55,7 @@ export default function CoachDashboardHeader() {
         </div>
 
         <div className="flex items-center gap-[12px] h-[36px]">
-          <Button>Hello</Button>
+          <CoachHomeworkCreateModal/>
         </div>
       </div>
     );

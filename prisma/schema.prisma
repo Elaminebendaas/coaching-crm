@@ -43,6 +43,7 @@ model Coach {
   clients       Student[]        @relation("CoachClients") // One-to-many relation to students
   subscription  SubscriptionTier @default(FREE)
   accounts      Account[]        // One-to-many relation with Account
+  homework      Homework[]
   role          UserRole           @default(COACH)
   @@map("coaches")
 }
@@ -64,7 +65,6 @@ model Student {
   @@map("students")
 }
 
-
 model VerificationToken {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   email     String
@@ -83,6 +83,16 @@ model PasswordResetToken {
 
   @@unique([email, token])
   @@map("password_reset_tokens")
+}
+
+model Homework {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  title         String    // Title of the homework
+  description   String    // Description of the homework
+  coachId       String    @db.ObjectId // Foreign key linking to Coach
+  coach         Coach     @relation(fields: [coachId], references: [id], onDelete: Cascade) // Relation to Coach
+  createdAt     DateTime  @default(now()) // Timestamp for when the homework was created
+  updatedAt     DateTime  @updatedAt // Timestamp for when the homework was last updated
 }
 
 enum SubscriptionTier {
