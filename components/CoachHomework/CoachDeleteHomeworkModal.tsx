@@ -14,6 +14,7 @@ import {
 import { Trash } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useHomework } from "@/app/contexts/CoachContexts/homework-context";
+import { Button } from "../ui/button";
 
 export default function CoachDeleteHomeworkModal({
   homeworkId,
@@ -45,9 +46,9 @@ export default function CoachDeleteHomeworkModal({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <button>
+        <Button>
           <Trash size={20} />
-        </button>
+        </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

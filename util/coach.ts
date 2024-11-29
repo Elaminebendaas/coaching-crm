@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { Student } from "@prisma/client";
 
 export const getCoachByEmail = async (email: string) => {
   return await db.coach.findUnique({
@@ -17,3 +18,19 @@ export const getCoachByUsername = async (username: string) => {
     where: { username },
   });
 };
+
+ export const fetchStudentsForCoach = async(coachId: string): Promise<Student[]>  => {
+  try {
+    const students = await db.student.findMany({
+      where: {
+        coach: {
+          id: coachId,
+        },
+      },
+    });
+    return students;
+  } catch (error) {
+    console.error("Error fetching students:", error);
+    return [];
+  }
+}
